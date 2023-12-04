@@ -9,24 +9,24 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 // import Container from "@mui/material/Container";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { deepPurple } from "@mui/material/colors";
+// import { useNavigate } from "react-router-dom";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline/CssBaseline";
 
 const defaultTheme = createTheme();
 const Login = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const HandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    // const navigate = useNavigate();
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get("email"),
-      password: data.get("password"),
-      contact: data.get("contact"),
-      firstname: data.get("firstname"),
-      lastname: data.get("lastname")
+      password: data.get("password")
+      // contact: data.get("contact"),
+      // firstname: data.get("firstname"),
+      // lastname: data.get("lastname")
     });
+    // navigate("/home");
   };
 
   return (
@@ -41,7 +41,8 @@ const Login = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            width: "100wh"
+            marginTop: "20px"
+            // width: "100wh"
           }}
         >
           ̥
@@ -49,7 +50,7 @@ const Login = () => {
             <Box
               component="form"
               noValidate
-              onSubmit={handleSubmit}
+              onSubmit={HandleSubmit}
               sx={{
                 marginTop: 8,
                 display: "flex",
@@ -135,7 +136,7 @@ const Login = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Register
+                Login
               </Button>
 
               <Grid container justifyContent="flex-end">
