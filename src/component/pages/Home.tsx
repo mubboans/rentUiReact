@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles";
 import { Button, Paper } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import Navbar from "./Navbar";
 const Home = () => {
   const dispatch = useDispatch();
   const addSurname = () => {
@@ -38,6 +39,7 @@ const Home = () => {
   }));
   return (
     <div>
+      <Navbar />
       <Grid
         container
         columns={{ xs: 4, md: 12 }}
@@ -80,6 +82,17 @@ const Home = () => {
           </Item>
         </Grid>
 
+        <Grid
+          item
+          xs={10}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Item>
+            <Profile />
+          </Item>
+        </Grid>
         <Grid
           item
           xs={10}
