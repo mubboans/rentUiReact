@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import * as yup from "yup";
 import "../../App.css";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { InputAdornment, IconButton } from "@mui/material";
 import { useState } from "react";
@@ -24,6 +25,7 @@ const initialValues = {
   email: "",
   password: ""
 };
+//@ts-expect-error
 const onSubmit = (event) => {
   console.log("THE VALUE OF USER INPUT", event);
 };
@@ -98,10 +100,9 @@ const Register = () => {
                       <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                           <Field name="firstname">
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                               <TextField
                                 {...field}
-                                name="firstname"
                                 required
                                 fullWidth
                                 label="First Name"
@@ -117,13 +118,12 @@ const Register = () => {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                           <Field name="lastname">
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                               <TextField
                                 required
                                 fullWidth
                                 id="lastname"
                                 label="Last Name"
-                                name="lastname"
                                 autoComplete="family-name"
                                 {...field}
                               />
@@ -137,13 +137,12 @@ const Register = () => {
                         </Grid>
                         <Grid item xs={12}>
                           <Field name="email">
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                               <TextField
                                 required
                                 fullWidth
                                 id="email"
                                 label="Email Address"
-                                name="email"
                                 {...field}
                                 autoComplete="email"
                               />
@@ -157,14 +156,13 @@ const Register = () => {
                         </Grid>
                         <Grid item xs={12}>
                           <Field name="contact">
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                               <TextField
                                 required
                                 fullWidth
                                 type="number"
                                 id="contact"
                                 label="Contact Number"
-                                name="contact"
                                 autoComplete="email"
                                 {...field}
                               />
@@ -178,11 +176,10 @@ const Register = () => {
                         </Grid>
                         <Grid item xs={12}>
                           <Field name="password">
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                               <TextField
                                 required
                                 fullWidth
-                                name="password"
                                 label="Password"
                                 id="password"
                                 type={showPassword ? "text" : "password"}
@@ -209,6 +206,7 @@ const Register = () => {
                               />
                             )}
                           </Field>
+
                           <ErrorMessage
                             name="password"
                             component={"div"}

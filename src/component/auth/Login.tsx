@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -10,7 +11,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import * as yup from "yup";
 import "../../App.css";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
@@ -20,6 +21,7 @@ import { InputAdornment, IconButton } from "@mui/material";
 const defaultTheme = createTheme();
 
 const initialValues = { email: "", password: "" };
+//@ts-expect-error
 const onSubmit = (event) => {
   console.log("THE VALUE OF USER INPUT", event);
   // event.preventDefault();
@@ -103,7 +105,7 @@ const Login = () => {
                       <Grid container spacing={2} marginTop={"10px"}>
                         <Grid item xs={12}>
                           <Field name="email">
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                               <TextField
                                 {...field}
                                 autoComplete="email"
@@ -115,6 +117,7 @@ const Login = () => {
                                 // {...formik.getFieldProps("email")}
                               />
                             )}
+                            {/* eslint-enable */}
                           </Field>
                           <ErrorMessage
                             name="email"
@@ -130,7 +133,7 @@ const Login = () => {
                       Password
                     </InputLabel> */}
                           <Field name="password">
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                               <TextField
                                 required
                                 fullWidth

@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import Chip from "@mui/material/Chip";
 import Profile from "./Profile";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import { Button, Paper } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useQuery, useMutation } from "@tanstack/react-query";
+// import { useQuery, useMutation } from "@tanstack/react-query";
 import Navbar from "./Navbar";
 const Home = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,8 @@ const Home = () => {
       payload: 1
     });
   };
-  const { a, b } = useSelector((state) => state.custom);
+  //@ts-expect-error
+  const { a, b } = useSelector((state) => state.custom); // eslint-disable-line
   //   const chipLabel = "hello";
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#ffffff",
