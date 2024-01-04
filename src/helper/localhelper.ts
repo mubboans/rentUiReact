@@ -8,3 +8,7 @@ export const setValue = (name: string, value: object) => {
     const data = JSON.stringify(value);
     localStorage.setItem(name, data);
 }
+
+export const isUserLogined = () => {
+    return !!localStorage.getItem('token');
+}

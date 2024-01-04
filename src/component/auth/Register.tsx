@@ -16,30 +16,58 @@ import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { InputAdornment, IconButton } from "@mui/material";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { User } from "../../interface/users";
+import { axiosConfig } from "../../helper/authApi";
+import { AuthResponse, ErrorResponse } from "../../type/LoginResponse";
 
 const defaultTheme = createTheme();
-const initialValues = {
-  firstname: "",
-  lastname: "",
-  contact: "",
-  email: "",
-  password: ""
-};
-//@ts-expect-error
-const onSubmit = (event) => {
-  console.log("THE VALUE OF USER INPUT", event);
-};
-const validationSchema = yup.object({
-  firstname: yup.string().required("First Name Required"),
-  lastname: yup.string().required("Last Name Required"),
-  contact: yup.string().min(10).max(10).required("Contact Number Required"),
-  email: yup.string().email("Invalid Email").required("Emall is required"),
-  password: yup.string().required("Password is required")
-});
-const Register = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+const Register = () => {
+  const mutation = useMutation<AuthResponse, ErrorResponse, User>(
+    async (user: User) => {
+      try {
+        console.log("mutation hits");
+        const response = await axiosConfig.post<AuthResponse>(
+          "auth/register",
+          user
+        );
+        return response.data;
+      } catch (e) {
+        return e;
+      }
+
+      // };
+    }
+  );
+  const initialValues = {
+    firstname: "",
+    lastname: "",
+    contact: "",
+    email: "",
+    password: ""
+  };
+  //@ts-expect-error
+  const onSubmit = (event) => {
+    console.log("THE VALUE OF USER INPUT", event);
+    mutation.mutate(event);
+  };
+  const validationSchema = yup.object({
+    firstname: yup.string().required("First Name Required"),
+    lastname: yup.string().required("Last Name Required"),
+    contact: yup.string().min(10).max(10).required("Contact Number Required"),
+    email: yup.string().email("Invalid Email").required("Emall is required"),
+    password: yup.string().required("Password is required"),
+    confirmpassword: yup
+      .string()
+      .oneOf([yup.ref("password"), ""], "Password Not Match")
+      .required("Password is required")
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [cshowPassword, setCShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickCShowPassword = () => setCShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -209,6 +237,46 @@ const Register = () => {
 
                           <ErrorMessage
                             name="password"
+                            component={"div"}
+                            className="errors-messg"
+                          />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                          <Field name="confirmpassword">
+                            {({ field }: FieldProps) => (
+                              <TextField
+                                required
+                                fullWidth
+                                label="Confirm Password"
+                                id="password"
+                                type={cshowPassword ? "text" : "password"}
+                                autoComplete="new-password"
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickCShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                      >
+                                        {showPassword ? (
+                                          <VisibilityOff />
+                                        ) : (
+                                          <Visibility />
+                                        )}
+                                      </IconButton>
+                                    </InputAdornment>
+                                  )
+                                }}
+                                {...field}
+                              />
+                            )}
+                          </Field>
+
+                          <ErrorMessage
+                            name="confirmpassword"
                             component={"div"}
                             className="errors-messg"
                           />

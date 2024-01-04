@@ -1,22 +1,33 @@
 import Register from "./component/auth/Register";
 import Login from "./component/auth/Login";
 import { Route, Routes } from "react-router-dom";
-import Home from "./component/pages/Home";
-import { Dashboard } from "@mui/icons-material";
-import Account from "./component/pages/Account";
-import Profile from "./component/pages/Profile";
+import { lazy, Suspense } from "react";
+import Loader from "./component/pages/Loader";
+const Account = lazy(() => import("./component/pages/Account"));
+const Profile = lazy(() => import("./component/pages/Profile"));
+const Payment = lazy(() => import("./component/pages/Payment"));
+const HouseType = lazy(() => import("./component/pages/HouseType"));
+const Tenants = lazy(() => import("./component/pages/Tenants"));
+const Home = lazy(() => import("./component/pages/Home"));
+const Dashboard = lazy(() => import("./component/pages/Dashboard"));
+import "./styles/app.scss";
 const App = () => {
   return (
     <>
-      <Routes>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/dashboard" element={<Dashboard />}></Route>
-        <Route path="/account" element={<Account />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
-      </Routes>
-
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/register" element={<Register />}></Route>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/account" element={<Account />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/payment" element={<Payment />}></Route>
+          <Route path="/housetype" element={<HouseType />}></Route>
+          <Route path="/home" element={<Home />}></Route>
+          <Route path="/tenant" element={<Tenants />}></Route>
+        </Routes>
+      </Suspense>
       {/* <Login />
       <Register />; */}
     </>

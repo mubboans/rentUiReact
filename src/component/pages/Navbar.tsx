@@ -14,10 +14,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 // import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
-const pages = ["Home", "Products", "Pricing", "Blog"];
+// import { isUserLogined } from "../../helper/localhelper";
+const pages = ["Home", "Product", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
+  // const location = useLocation();
+  // const userLogined = isUserLogined();
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -34,28 +37,35 @@ const Navbar = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (data?: string) => {
+    console.log(data, "data log");
+    navigate(`/${data?.toLowerCase()}`);
     setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = (values: string) => {
     console.log(values, "values");
     setAnchorElUser(null);
-    switch (values) {
-      case "Profile":
-        navigate("profile");
-        break;
-      case "Dashboard":
-        navigate("dashboard");
-        break;
-      case "Account":
-        navigate("account");
-        break;
-      case "Logout":
-        navigate("login");
-        console.log("clear token from local storage");
-        break;
+    if (values == "Logout") {
+      navigate("/login");
+    } else {
+      navigate(`/${values?.toLowerCase()}`);
     }
+    // switch (values) {
+    //   case "Profile":
+    //     navigate("profile");
+    //     break;
+    //   case "Dashboard":
+    //     navigate("dashboard");
+    //     break;
+    //   case "Account":
+    //     navigate("account");
+    //     break;
+    //   case "Logout":
+    //     navigate("login");
+    //     console.log("clear token from local storage");
+    //     break;
+    // }
   };
 
   return (
@@ -63,7 +73,6 @@ const Navbar = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <DomainAddIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-
           <Typography
             variant="h6"
             noWrap
@@ -109,13 +118,13 @@ const Navbar = () => {
                 horizontal: "left"
               }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+              onClose={() => handleCloseNavMenu}
               sx={{
                 display: { xs: "block", md: "none" }
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -142,15 +151,21 @@ const Navbar = () => {
             Apna Rent
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            {pages.map((page) => {
+              {
+                console.log(page, "pages logs");
+              }
+              return (
+                <Button
+                  key={page}
+                  onClick={() => handleCloseNavMenu(page)}
+                  // onClick={handleCloseNavMenu(page)}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {page}
+                </Button>
+              );
+            })}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -192,6 +207,24 @@ const Navbar = () => {
                   </Typography>
                 </MenuItem>
               ))}
+              {/* {userLogined ? (
+                <>
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => {
+                        handleCloseUserMenu(setting);
+                      }}
+                    >
+                      <Typography key={setting} textAlign="center">
+                        {setting}
+                      </Typography>
+                    </MenuItem>
+                  ))}
+                </>
+              ) : (
+                <Typography textAlign="center">Login</Typography>
+              )} */}
             </Menu>
           </Box>
         </Toolbar>

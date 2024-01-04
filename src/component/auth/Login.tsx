@@ -24,16 +24,6 @@ const initialValues = { email: "", password: "" };
 //@ts-expect-error
 const onSubmit = (event) => {
   console.log("THE VALUE OF USER INPUT", event);
-  // event.preventDefault();
-  // const navigate = useNavigate();
-  // const data = new FormData(event.currentTarget);
-  // console.log({
-  //   email: data.get("email"),
-  //   password: data.get("password")
-  // });
-  // console.log(formik.values, "formik values");
-
-  // navigate("/home");
 };
 const validationSchema = yup.object({
   email: yup.string().email("Invalid Email").required("Emall is required"),
