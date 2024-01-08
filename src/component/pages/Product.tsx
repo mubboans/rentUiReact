@@ -1,5 +1,12 @@
+import Navbar from "./Navbar";
+
 const Product = () => {
-  return <div>Product</div>;
+  return (
+    <div>
+      <Navbar userLoggedin={true} />
+      Product
+    </div>
+  );
 };
 
 export default Product;

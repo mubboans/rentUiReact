@@ -19,27 +19,47 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { User } from "../../interface/users";
 import { axiosConfig } from "../../helper/authApi";
-import { AuthResponse, ErrorResponse } from "../../type/LoginResponse";
+// import { SuccesResponse, ErrorResponse } from "../../type/LoginResponse";
+import { ChangeUserState, setValue } from "../../helper/localhelper";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { ShowToast } from "../../helper/ToastHelper";
 
 const defaultTheme = createTheme();
 
 const Register = () => {
-  const mutation = useMutation<AuthResponse, ErrorResponse, User>(
-    async (user: User) => {
-      try {
-        console.log("mutation hits");
-        const response = await axiosConfig.post<AuthResponse>(
-          "auth/register",
-          user
-        );
-        return response.data;
-      } catch (e) {
-        return e;
-      }
-
-      // };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  async function RegisterUser(obj: User) {
+    try {
+      setBtnText("Loading");
+      console.log("mutation hits");
+      const response = await axiosConfig.post("auth/register", obj);
+      setValue("token", response?.data?.accessToken);
+      setValue("userdetail", response?.data);
+      setBtnText("Register");
+      ShowToast(dispatch, response?.data?.message, "success");
+      ChangeUserState(dispatch, true);
+      navigate("/home");
+      // return response.data;
+    } catch (e) {
+      setBtnText("Retry");
+      //@ts-ignore
+      ShowToast(dispatch, e?.response?.data?.message, "error");
+      return e;
     }
-  );
+  }
+  const mutation = useMutation({
+    mutationFn: async (event: User) => {
+      // event.preventDefault()
+      return await RegisterUser(event);
+    }
+  });
+  const [BtnText, setBtnText] = useState("Register");
+  // async (user: User) => {
+  // };
+  // }
+  // );
   const initialValues = {
     firstname: "",
     lastname: "",
@@ -50,7 +70,7 @@ const Register = () => {
   //@ts-expect-error
   const onSubmit = (event) => {
     console.log("THE VALUE OF USER INPUT", event);
-    mutation.mutate(event);
+    mutation.mutate({ ...event, name: event.firstname + event.lastname });
   };
   const validationSchema = yup.object({
     firstname: yup.string().required("First Name Required"),
@@ -65,7 +85,6 @@ const Register = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [cshowPassword, setCShowPassword] = useState(false);
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickCShowPassword = () => setCShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -301,7 +320,7 @@ const Register = () => {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                       >
-                        Register
+                        {BtnText}
                       </Button>
                       <Grid container justifyContent="flex-end">
                         <Grid item>

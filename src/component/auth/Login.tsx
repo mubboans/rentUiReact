@@ -12,28 +12,65 @@ import Typography from "@mui/material/Typography";
 import * as yup from "yup";
 import "../../App.css";
 import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { InputAdornment, IconButton } from "@mui/material";
-
+import { axiosConfig } from "../../helper/authApi";
+import { useMutation } from "@tanstack/react-query";
+import { ChangeUserState, setValue } from "../../helper/localhelper";
+import { useNavigate } from "react-router-dom";
+import { ShowToast } from "../../helper/ToastHelper";
+import { useDispatch } from "react-redux";
 const defaultTheme = createTheme();
-
+interface loginData {
+  email?: string;
+  password?: string;
+}
 const initialValues = { email: "", password: "" };
-//@ts-expect-error
-const onSubmit = (event) => {
-  console.log("THE VALUE OF USER INPUT", event);
-};
+
 const validationSchema = yup.object({
   email: yup.string().email("Invalid Email").required("Emall is required"),
   password: yup.string().required("Password is required")
 });
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const LoginUser = async (obj: loginData) => {
+    try {
+      const response = await axiosConfig.post("auth/login", obj);
 
+      console.log(response, "response");
+      // const cookies = response?.headers?.get("Set-Cookie");
+      // const cookies = response.headers?.get();
+      setValue("token", response?.data?.data?.accessToken);
+      setValue("userdetail", response?.data);
+      console.log("value set in local");
+      ShowToast(dispatch, response?.data?.message, "success");
+      console.log("Toast Show");
+      ChangeUserState(dispatch, true);
+      navigate("/home");
+      return response;
+    } catch (error) {
+      console.log(error, "error check");
+      //@ts-ignore
+      ShowToast(dispatch, error?.response?.data?.message, "error");
+      return error;
+    }
+  };
+  const mutation = useMutation({
+    mutationFn: async (event: loginData) => {
+      // event.preventDefault()
+      return await LoginUser(event);
+    }
+  });
+  const onSubmit = (event: loginData) => {
+    console.log("THE VALUE OF USER INPUT", event);
+    mutation.mutate(event);
+  };
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {

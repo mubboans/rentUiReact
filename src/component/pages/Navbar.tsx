@@ -10,17 +10,35 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Container from "@mui/material/Container";
 // import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
+// import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 // import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
-// import { isUserLogined } from "../../helper/localhelper";
-const pages = ["Home", "Product", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { LogoutUser } from "../../helper/localhelper";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
+import AddchartTwoToneIcon from "@mui/icons-material/AddchartTwoTone";
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import { useDispatch } from "react-redux";
 
-const Navbar = () => {
+const pages = ["Home", "Product", "Pricing", "Blog"];
+// const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = [
+  { label: "Profile", icons: <AccountCircleOutlinedIcon /> },
+  { label: "Account", icons: <AssignmentIndOutlinedIcon /> },
+  { label: "Dashboard", icons: <AddchartTwoToneIcon /> },
+  { label: "Logout", icons: <ExitToAppOutlinedIcon /> }
+];
+type loginCheck = {
+  userLoggedin?: boolean;
+};
+const Navbar = ({ userLoggedin }: loginCheck) => {
   // const location = useLocation();
-  // const userLogined = isUserLogined();
+  // console.log(userLoggedin, "userLoggedin check");
+
+  const dispatch = useDispatch();
+  // const [userLoggedin,setuserLoggedin] = React.useState<boolean>(isUserLogined())
+
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -44,13 +62,18 @@ const Navbar = () => {
   };
 
   const handleCloseUserMenu = (values: string) => {
-    console.log(values, "values");
-    setAnchorElUser(null);
-    if (values == "Logout") {
+    if (typeof values == "object") {
+      return setAnchorElUser(null);
+    }
+    console.log(values, "values", typeof values, "typeof values");
+    values = values?.toLowerCase();
+    if (values == "logout") {
+      LogoutUser(dispatch);
       navigate("/login");
     } else {
-      navigate(`/${values?.toLowerCase()}`);
+      navigate(`/${values}`);
     }
+
     // switch (values) {
     //   case "Profile":
     //     navigate("profile");
@@ -123,11 +146,12 @@ const Navbar = () => {
                 display: { xs: "block", md: "none" }
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              {userLoggedin &&
+                pages.map((page) => (
+                  <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
+                    <Typography textAlign="center">{page}</Typography>
+                  </MenuItem>
+                ))}
             </Menu>
           </Box>
 
@@ -151,34 +175,32 @@ const Navbar = () => {
             Apna Rent
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => {
-              {
-                console.log(page, "pages logs");
-              }
-              return (
-                <Button
-                  key={page}
-                  onClick={() => handleCloseNavMenu(page)}
-                  // onClick={handleCloseNavMenu(page)}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page}
-                </Button>
-              );
-            })}
+            {userLoggedin &&
+              pages.map((page) => {
+                return (
+                  <Button
+                    key={page}
+                    onClick={() => handleCloseNavMenu(page)}
+                    // onClick={handleCloseNavMenu(page)}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page}
+                  </Button>
+                );
+              })}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton
-                onClick={handleOpenUserMenu}
-                sx={{ p: 0 }}
-                size="large"
-                color="inherit"
-              >
-                <AccountCircleIcon />
-              </IconButton>
-            </Tooltip>
+            {/* <Tooltip title="Open settings"> */}
+            <IconButton
+              onClick={handleOpenUserMenu}
+              sx={{ p: 0 }}
+              size="large"
+              color="inherit"
+            >
+              <AccountCircleIcon />
+            </IconButton>
+            {/* </Tooltip> */}
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -195,7 +217,7 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {/* {settings.map((setting) => (
                 <MenuItem
                   key={setting}
                   onClick={() => {
@@ -206,25 +228,34 @@ const Navbar = () => {
                     {setting}
                   </Typography>
                 </MenuItem>
-              ))}
-              {/* {userLogined ? (
+              ))} */}
+              {userLoggedin ? (
                 <>
                   {settings.map((setting) => (
                     <MenuItem
-                      key={setting}
+                      key={setting.label}
                       onClick={() => {
-                        handleCloseUserMenu(setting);
+                        handleCloseUserMenu(setting.label);
                       }}
                     >
-                      <Typography key={setting} textAlign="center">
-                        {setting}
+                      {setting.icons}
+                      <Typography key={setting.label} textAlign="center">
+                        {setting.label}
                       </Typography>
                     </MenuItem>
                   ))}
                 </>
               ) : (
-                <Typography textAlign="center">Login</Typography>
-              )} */}
+                <>
+                  <MenuItem
+                    onClick={() => {
+                      handleCloseUserMenu("Login");
+                    }}
+                  >
+                    <Typography textAlign="center">Login</Typography>
+                  </MenuItem>
+                </>
+              )}
             </Menu>
           </Box>
         </Toolbar>
