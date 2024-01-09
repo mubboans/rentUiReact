@@ -12,3 +12,12 @@ export interface User {
     profileImg?: string,
     isDeleted?: string,
 }
+type columnHeader = {
+    Header?: string,
+    accessor?: string,
+}
+export interface TableProps {
+    columnArr?: Array<columnHeader>[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dataArray?: Array<any>[]
+}

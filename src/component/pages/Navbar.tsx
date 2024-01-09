@@ -20,6 +20,7 @@ import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined
 import AddchartTwoToneIcon from "@mui/icons-material/AddchartTwoTone";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import { useDispatch } from "react-redux";
+import SideBar from "./SideBar";
 
 const pages = ["Home", "Product", "Pricing", "Blog"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -95,6 +96,7 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
     <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          <SideBar />
           <DomainAddIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
