@@ -21,3 +21,19 @@ export interface TableProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dataArray?: Array<any>[]
 }
+export class Users {
+    // constructor(){
+    firstname?: string;
+    lastname?: string;
+    email?: string;
+    contact?: string;
+    password?: string;
+    confirmpassword?: string;
+    DOB?: string;
+    name?: string;
+    role?: string;
+    isActive?: string;
+    profileImg?: string;
+    isDeleted?: string;
+    // }
+} 

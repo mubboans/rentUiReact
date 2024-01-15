@@ -11,11 +11,14 @@ const HouseType = lazy(() => import("./component/pages/HouseType"));
 const Tenants = lazy(() => import("./component/pages/Tenants"));
 const Home = lazy(() => import("./component/pages/Home"));
 const Dashboard = lazy(() => import("./component/pages/Dashboard"));
+const TenantSignUp = lazy(() => import("./component/pages/TenantSignUp"));
+const RouteNotFound = lazy(() => import("./component/pages/RouteNotFound"));
 import "./styles/app.scss";
 import Toast from "./component/pages/Toast";
 import Navbar from "./component/pages/Navbar";
 import { isUserLogined } from "./helper/localhelper";
 import { useSelector } from "react-redux";
+
 const App = () => {
   //@ts-expect-error
   const { isUserLogin } = useSelector((state) => state.custom) || {};
@@ -43,9 +46,11 @@ const App = () => {
           <Route path="/housetype" element={<HouseType />}></Route>
           <Route path="/home" element={<Home />}></Route>
           <Route path="/tenant" element={<Tenants />}></Route>
+          <Route path="/tenantsignup" element={<TenantSignUp />} />
+          <Route path="*" element={<RouteNotFound />} />
         </Routes>
       </Suspense>
-      {/* <Login />
+      {/* <Login />~
       <Register />; */}
     </>
   );

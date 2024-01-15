@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { InputAdornment, IconButton } from "@mui/material";
-import { axiosConfig } from "../../helper/authApi";
+import axiosConfig from "../../helper/authApi";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeUserState, setValue } from "../../helper/localhelper";
 import { useNavigate } from "react-router-dom";

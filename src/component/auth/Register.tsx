@@ -18,7 +18,7 @@ import { InputAdornment, IconButton } from "@mui/material";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { User } from "../../interface/users";
-import { axiosConfig } from "../../helper/authApi";
+import axiosConfig from "../../helper/authApi";
 // import { SuccesResponse, ErrorResponse } from "../../type/LoginResponse";
 import { ChangeUserState, setValue } from "../../helper/localhelper";
 import { useNavigate } from "react-router-dom";
@@ -81,7 +81,7 @@ const Register = () => {
     confirmpassword: yup
       .string()
       .oneOf([yup.ref("password"), ""], "Password Not Match")
-      .required("Password is required")
+      .required("Confirm Password is required")
   });
   const [showPassword, setShowPassword] = useState(false);
   const [cshowPassword, setCShowPassword] = useState(false);
