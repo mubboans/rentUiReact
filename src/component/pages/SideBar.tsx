@@ -17,6 +17,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import Payment from "@mui/icons-material/Payment";
 import Assessment from "@mui/icons-material/Assessment";
 import AssignmentInd from "@mui/icons-material/AssignmentInd";
+import { useNavigate } from "react-router-dom";
+
 const sideBar = [
   { label: "House Type", icons: <CategoryIcon />, index: 1 },
   { label: "House", icons: <AddHomeIcon />, index: 2 },
@@ -26,6 +28,7 @@ const sideBar = [
   { label: "Users", icons: <AssignmentInd />, index: 6 }
 ];
 const SideBar = () => {
+  const navigate = useNavigate();
   const [showbar, Setshowbar] = useState<boolean>(false);
   const toggleDrawer =
     (state: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -38,7 +41,11 @@ const SideBar = () => {
       }
       Setshowbar(state);
     };
+  const moveto = (event: string) => {
+    console.log(event.toLowerCase().trim(), "check event");
 
+    navigate("/" + event.replace(/\s/g, ""));
+  };
   return (
     <>
       <IconButton
@@ -59,7 +66,12 @@ const SideBar = () => {
             {sideBar.map((text) => (
               <>
                 <ListItem key={text.index} disablePadding>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() => {
+                      console.log(text.label);
+                      moveto(text.label.toLowerCase().trim());
+                    }}
+                  >
                     <ListItemIcon>{text.icons}</ListItemIcon>
                     <ListItemText primary={text.label} />
                   </ListItemButton>

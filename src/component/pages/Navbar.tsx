@@ -148,12 +148,17 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
                 display: { xs: "block", md: "none" }
               }}
             >
-              {userLoggedin &&
-                pages.map((page) => (
-                  <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
-                ))}
+              <>
+                {userLoggedin &&
+                  pages.map((page) => (
+                    <MenuItem
+                      key={page}
+                      onClick={() => handleCloseNavMenu(page)}
+                    >
+                      <Typography textAlign="center">{page}</Typography>
+                    </MenuItem>
+                  ))}
+              </>
             </Menu>
           </Box>
 
@@ -231,6 +236,7 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
                   </Typography>
                 </MenuItem>
               ))} */}
+
               {userLoggedin ? (
                 <>
                   {settings.map((setting) => (

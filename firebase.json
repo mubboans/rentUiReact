@@ -5,6 +5,167 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          },
+          {
+            "key": "Strict-Transport-Security",
+            "value": "max-age=31536000"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          }
+        ]
+      },
+      {
+        "source": "https://www.facebook.com/tr/?id=222284207049177&ev=PageView&dl=https%3A%2F%2Fhedged-seo-optimize.netlify.app%2F&rl=&if=false&ts=1698329372509&sw=1367&sh=864&v=2.9.135&r=stable&ec=0&o=30&fbp=fb.2.1698329372507.1476082930&ler=empty&it=1698329372062&coo=false&rqm=GET",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "https://www.facebook.com/tr/?id=233664399195247&ev=PageView&dl=https%3A%2F%2Fhedged-seo-optimize.netlify.app%2F&rl=&if=false&ts=1698329372735&sw=1367&sh=864&v=2.9.135&r=stable&a=tmgoogletagmanager&ec=0&o=30&fbp=fb.2.1698329372507.1476082930&ler=empty&cs_est=true&it=1698329372062&coo=false&rqm=GET",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "https://www.facebook.com/tr/?id=233664399195247&ev=web_first%20open&dl=https%3A%2F%2Fhedged-seo-optimize.netlify.app%2F&rl=&if=false&ts=1698329372737&sw=1367&sh=864&v=2.9.135&r=stable&a=tmgoogletagmanager&ec=1&o=30&fbp=fb.2.1698329372507.1476082930&ler=empty&it=1698329372062&coo=false&rqm=GET",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "https://www.facebook.com/tr/?coo=false&dl=https%3A%2F%2Fhedged-seo-optimize.netlify.app%2F&ec=1&ev=web_first%20open&fbp=fb.2.1698329372507.1476082930&id=222284207049177&if=false&it=1698329372062&ler=empty&o=30&r=stable&redirect=0&rl=&rqm=GET&sh=864&sw=1367&ts=1698329372736&v=2.9.135",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "https://web-sdk.smartlook.com/recorder.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "https://connect.facebook.net/en_US/fbevents.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "https://connect.facebook.net/signals/config/233664399195247?v=2.9.135&r=stable&domain=hedged-seo-optimize.netlify.app",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "https://connect.facebook.net/signals/config/222284207049177?v=2.9.135&r=stable&domain=hedged-seo-optimize.netlify.app",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "https://www.google-analytics.com/analytics.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|webp|ttf|ttc|woff|woff2|mp4)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(js|css)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      }
+    ],
+    "redirects": [
+      {
+        "source": "www.apnarental.web.app",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/housetype",
+        "destination": "/housetype",
+        "type": 301
+      },
+      {
+        "source": "/house",
+        "destination": "/house",
+        "type": 301
+      },
+      {
+        "source": "/tenant",
+        "destination": "/tenant",
+        "type": 301
+      },
+      {
+        "source": "/payment",
+        "destination": "/payment",
+        "type": 301
+      },
+      {
+        "source": "/tenantsignup",
+        "destination": "/tenantsignup",
+        "type": 301
+      }
+    ],
+    "cleanUrls": true
   }
 }

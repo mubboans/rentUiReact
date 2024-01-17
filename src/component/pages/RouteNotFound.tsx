@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import image from "../../assets/images/404_not_found.jpeg";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
-
-import Avatar from "@mui/material/Avatar";
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
+// import Avatar from "@mui/material/Avatar";
 import ButtonBase from "@mui/material/ButtonBase";
+import { useNavigate } from "react-router-dom";
 import { Chip } from "@mui/material";
 const Img = styled("img")({
   margin: "auto",
@@ -14,6 +15,7 @@ const Img = styled("img")({
 });
 
 const RouteNotFound = () => {
+  const navigate = useNavigate();
   return (
     <Grid
       container
@@ -26,15 +28,32 @@ const RouteNotFound = () => {
         height: "100vh"
       }}
     >
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} md={10}>
         <ButtonBase sx={{ width: "100%", height: "100%" }}>
           <Img alt="complex" src={image} />
         </ButtonBase>
+        {/* <Chip
+          style={{
+            margin: "auto",
+            alignSelf: "center"
+          }}
+          avatar={<ArrowBackRoundedIcon />}
+          onClick={() => {
+            navigate(-1);
+          }}
+          label="Back"
+        /> */}
       </Grid>
-      <Grid item xs={12} md={6}>
-        <Link to="/login">
-          <Chip avatar={<Avatar>Login</Avatar>} label="Go to Login" />
-        </Link>
+      <Grid item xs={12} md={2}>
+        {/* <Link to="/login"> */}
+        <Chip
+          avatar={<ArrowBackRoundedIcon />}
+          onClick={() => {
+            navigate(-1);
+          }}
+          label="Back"
+        />
+        {/* </Link> */}
       </Grid>
     </Grid>
   );
