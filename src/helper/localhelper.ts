@@ -20,7 +20,13 @@ export function ChangeUserState(dispatch: Dispatch<AnyAction>, state: boolean) {
         payload: state
     })
 }
-
+export function ChangeUserSession(dispatch: Dispatch<AnyAction>, state: boolean) {
+    console.log('state', state);
+    dispatch({
+        type: "userSession",
+        payload: state
+    })
+}
 export function LogoutUser(dispatch: Dispatch<AnyAction>) {
     console.log('logouting users');
     localStorage.removeItem('token');

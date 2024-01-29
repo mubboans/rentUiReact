@@ -52,7 +52,7 @@ const Login = () => {
       ShowToast(dispatch, response?.data?.message, "success");
       console.log("Toast Show");
       ChangeUserState(dispatch, true);
-      navigate("/home");
+      navigate("/houses");
       return response;
     } catch (error) {
       console.log(error, "error check");

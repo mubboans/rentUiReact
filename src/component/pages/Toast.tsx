@@ -8,7 +8,7 @@ const Toast = () => {
   //@ts-expect-error
   const { a, toastConf } = useSelector((state) => state.custom) || {}; // eslint-disable-line
   useEffect(() => {
-    console.log(toastConf, "toastConf hit", a);
+    // console.log(toastConf, "toastConf hit", a);
     if (toastConf?.showtoast) {
       const toastOptions = {
         duration: 6000,

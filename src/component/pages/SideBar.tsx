@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 const sideBar = [
   { label: "House Type", icons: <CategoryIcon />, index: 1 },
-  { label: "House", icons: <AddHomeIcon />, index: 2 },
+  { label: "Houses", icons: <AddHomeIcon />, index: 2 },
   { label: "Tenant", icons: <PersonIcon />, index: 3 },
   { label: "Payment", icons: <Payment />, index: 4 },
   { label: "Reports", icons: <Assessment />, index: 5 },

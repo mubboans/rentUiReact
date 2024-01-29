@@ -13,18 +13,45 @@ const Home = lazy(() => import("./component/pages/Home"));
 const Dashboard = lazy(() => import("./component/pages/Dashboard"));
 const TenantSignUp = lazy(() => import("./component/pages/TenantSignUp"));
 const RouteNotFound = lazy(() => import("./component/pages/RouteNotFound"));
+const Report = lazy(() => import("./component/pages/Report"));
+const Users = lazy(() => import("./component/pages/Users"));
+const House = lazy(() => import("./component/pages/House"));
 import "./styles/app.scss";
 import Toast from "./component/pages/Toast";
 import Navbar from "./component/pages/Navbar";
-import { isUserLogined } from "./helper/localhelper";
-import { useSelector } from "react-redux";
+import { ChangeUserSession, isUserLogined } from "./helper/localhelper";
+import { useDispatch, useSelector } from "react-redux";
+import UserLoginModal from "./component/pages/UserLoginModal";
+import axiosConfig from "./helper/authApi";
+// import axiosConfig from "./helper/authApi";
+// import UserLoginModal from "./component/pages/UserLoginModal";
 
 const App = () => {
+  const dispatch = useDispatch();
+  // const [show, setShow] = useState(false);
   //@ts-expect-error
   const { isUserLogin } = useSelector((state) => state.custom) || {};
   useEffect(() => {
-    console.log(isUserLogin, "userState");
+    console.log(isUserLogin, " ");
+    //  async function checkUserStatus() {
+    //   try {
 
+    //   } catch (error) {
+
+    //   }
+    //  }
+    //  checkUserStatus()
+    (async () => {
+      try {
+        await axiosConfig.get("/users/status");
+        // setShow(false);
+        ChangeUserSession(dispatch, false);
+      } catch (error) {
+        console.log(error, "error");
+        // setShow(true);
+        ChangeUserSession(dispatch, true);
+      }
+    })();
     setuserLoggedin(isUserLogin);
   }, [isUserLogin]);
   const [userLoggedin, setuserLoggedin] = useState<boolean>(isUserLogined());
@@ -33,6 +60,7 @@ const App = () => {
   return (
     <>
       <Toast />
+      <UserLoginModal />
       <Navbar userLoggedin={userLoggedin} />
       <Suspense fallback={<Loader />}>
         <Routes>
@@ -45,8 +73,11 @@ const App = () => {
           <Route path="/payment" element={<Payment />}></Route>
           <Route path="/housetype" element={<HouseType />}></Route>
           <Route path="/home" element={<Home />}></Route>
+          <Route path="/houses" element={<House />}></Route>
           <Route path="/tenant" element={<Tenants />}></Route>
           <Route path="/tenantsignup" element={<TenantSignUp />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/users" element={<Users />} />
           <Route path="*" element={<RouteNotFound />} />
         </Routes>
       </Suspense>

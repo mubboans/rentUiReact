@@ -9,7 +9,8 @@ const intialState = {
         message: "",
         type: ''
     },
-    isUserLogin: isUserLogined()
+    isUserLogin: isUserLogined(),
+    session: false,
 }
 
 export const customreducer = createReducer(intialState, {
@@ -30,5 +31,8 @@ export const customreducer = createReducer(intialState, {
     },
     userState: (state, action) => {
         state.isUserLogin = action.payload;
+    },
+    userSession: (state, action) => {
+        state.session = action.payload;
     }
 })

@@ -34,7 +34,8 @@ import {
   TableBody,
   TableCell,
   tableCellClasses,
-  IconButton
+  IconButton,
+  Alert
   // Button,
   // Dialog,
   // DialogActions,
@@ -63,6 +64,15 @@ const TableHelper = ({ rows, columns, action }: tableProps) => {
   //   const handleClose = () => {
   //     setEditModalOpen(() => isEditModalOpen = !isEditModalOpen);
   // }
+  console.log(rows?.length, "length check rows");
+  if (!(rows && rows.length > 0)) {
+    // console.log("row lenght", rows.length);
+    return (
+      <Alert variant="filled" severity="info">
+        It seem you dont have data in table.
+      </Alert>
+    );
+  }
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -84,6 +94,7 @@ const TableHelper = ({ rows, columns, action }: tableProps) => {
   // const showModal = (open:boolean,btndata,data) => {
 
   // }
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
