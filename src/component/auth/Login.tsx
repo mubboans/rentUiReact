@@ -41,6 +41,7 @@ const Login = () => {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const LoginUser = async (obj: loginData) => {
     try {
+      console.log("post");
       const response = await axiosConfig.post("auth/login", obj);
 
       console.log(response, "response");

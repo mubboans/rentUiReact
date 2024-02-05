@@ -106,6 +106,19 @@ const TableHelper = ({ rows, columns, action }: tableProps) => {
                   {column.toUpperCase()}
                 </StyledTableCell>
               ))}
+            {/* columns.map((column) => {
+                return (
+                  column !== "_id" &&
+                  column !== "createdAt" &&
+                  column !== "updatedAt" &&
+                  column !== "_v" && (
+                    <StyledTableCell key={column} align="center">
+                      {column.toUpperCase()}
+                    </StyledTableCell>
+                  )
+                );
+              })   */}
+
             {action && action.length > 0 && (
               <StyledTableCell align="center">Action</StyledTableCell>
             )}
@@ -126,6 +139,19 @@ const TableHelper = ({ rows, columns, action }: tableProps) => {
                       {row[column]}
                     </StyledTableCell>
                   ))}
+
+                {/* columns.map((column) => {
+                return (
+                  column !== "_id" &&
+                  column !== "createdAt" &&
+                  column !== "updatedAt" &&
+                  column !== "__v" && (
+                    <StyledTableCell key={column} align="center">
+                      {column.toUpperCase()}
+                    </StyledTableCell>
+                  )
+                );
+              }) */}
 
                 {action && action.length > 0 && (
                   <StyledTableCell align="center">

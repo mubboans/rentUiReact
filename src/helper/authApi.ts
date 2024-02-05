@@ -3,13 +3,15 @@ import { getValue } from "./localhelper";
 // import baseUrl from
 const axiosConfig = axios.create({
     baseURL: "http://localhost:8001/apna-rent/v1/",
-    withCredentials: true,
+    // withCredentials: true,
+
 })
+
 axiosConfig.interceptors.request.use(
     (config) => {
-
         const token = getValue('token'); // Assuming you store the token in localStorage
-        if (token) {
+        console.log(token, 'token check');
+        if (token && Object.keys(token).length > 0) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         if (config.params) {

@@ -38,7 +38,7 @@ type dialogState = {
 };
 const House = () => {
   const [modalData, setModalData] = useState<dialogState>({
-    title: "Category",
+    title: "House/Property",
     open: false,
     type: "post"
   });
@@ -81,6 +81,8 @@ const House = () => {
     setCurrObj({});
   };
   const handleedit = (itemId: any) => {
+    console.log(itemId, "itemId edit");
+
     setCurrObj({ ...itemId });
     setModalData({
       ...modalData,
@@ -199,7 +201,6 @@ const House = () => {
               <TextField
                 autoFocus
                 required
-                error
                 margin="dense"
                 name="housename"
                 label="Enter House Description"
@@ -222,9 +223,7 @@ const House = () => {
               alignItems="center"
             >
               <TextField
-                autoFocus
                 required
-                error
                 margin="dense"
                 name="housename"
                 label="Enter House Name"
@@ -247,9 +246,7 @@ const House = () => {
               alignItems="center"
             >
               <TextField
-                autoFocus
                 required
-                error
                 margin="dense"
                 name="housename"
                 label="Enter House Price"
@@ -275,7 +272,7 @@ const House = () => {
                 <DatePicker
                   value={
                     houseObj?.aggreementDate
-                      ? houseObj?.aggreementDate
+                      ? moment(houseObj?.aggreementDate)
                       : moment()
                   }
                   onChange={(e: any) => {
@@ -314,7 +311,6 @@ const House = () => {
               alignItems="center"
             >
               <TextField
-                autoFocus
                 required
                 margin="dense"
                 name="housename"
@@ -386,7 +382,7 @@ const House = () => {
       </Dialog>
 
       <CardLayout
-        title={"House Category"}
+        title={"House/Property"}
         onSubmit={onSubmit}
         tableComponent={
           <TableHelper

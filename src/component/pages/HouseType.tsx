@@ -73,6 +73,7 @@ const HouseType = () => {
     setCurrObj({});
   };
   const handleedit = (itemId: any) => {
+    console.log(itemId, "edit item");
     setCurrObj({ ...itemId });
     setModalData({
       ...modalData,
