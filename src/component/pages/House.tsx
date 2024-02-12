@@ -21,10 +21,14 @@ import {
   DialogActions,
   Button,
   TextField,
-  Grid
+  Grid,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select
 } from "@mui/material";
 // import { ChangeUserSession } from "../../helper/localhelper";
-import { Houses } from "../../interface/Category";
+import { Category, Houses } from "../../interface/Category";
 // import { House } from "@mui/icons-material";
 // import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from "@mui/material";
 type houseState = {
@@ -44,21 +48,41 @@ const House = () => {
   });
   const dispatch = useDispatch();
   const [houseObj, setCurrObj] = useState<Houses>({});
-  const [houseArr, setCategory] = useState<houseState | null>(null);
-
+  const [houseArr, setHouseArr] = useState<houseState | null>(null);
+  const [category, setCategory] = useState<Category | any>([]);
   const fetchHouses = async () => {
     try {
       const response = await axiosConfig.get("/property");
+      const categoryData = await axiosConfig.get("/category");
+      const data = categoryData?.data?.data as Category[];
+      setCategory(data);
       const rows = response?.data?.data as Houses[] | null;
       const allKeys = rows
         ? [...new Set(rows.flatMap((obj) => Object.keys(obj)))]
         : null;
       // console.log(rows, allKeys);
-
-      setCategory((e) => ({
+      const d = rows?.map((x) => {
+        return {
+          ...x,
+          categoryname: x?.categoryDetail?.categoryname
+            ? x?.categoryDetail?.categoryname
+            : "-"
+        };
+      });
+      setHouseArr((e: any) => ({
         ...e,
-        rows: rows,
-        columnArr: allKeys
+        rows: d,
+        columnArr: [
+          "categoryname",
+          "createdAt",
+          "housename",
+          "description",
+          "price",
+          "aggreementDate",
+          "deposit",
+          "status",
+          "remarks"
+        ]
       }));
 
       console.log(houseArr, "categoryArr");
@@ -111,6 +135,8 @@ const House = () => {
     try {
       let response;
       const data = {
+        // categoryId: obj.categoryId,
+        categoryDetail: obj.categoryDetail,
         housename: obj.housename,
         description: obj.description,
         price: obj.price,
@@ -120,6 +146,7 @@ const House = () => {
         remarks: obj.remarks
       };
       if (type == "post") {
+        // obj.categoryDetail = obj.categoryId;
         response = await axiosConfig.post("/property", obj);
       } else if (type == "put") {
         response = await axiosConfig.put("/property", data, {
@@ -282,7 +309,7 @@ const House = () => {
                       aggreementDate: value
                     });
                   }}
-                  label="Basic date picker"
+                  label="Select Aggreement-Date"
                 />
               </LocalizationProvider>
               {/* <TextField
@@ -372,6 +399,46 @@ const House = () => {
                   setCurrObj({ ...houseObj, status: value });
                 }}
               />
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              md={6}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  Select Category
+                </InputLabel>
+                <Select
+                  value={
+                    houseObj.categoryDetail?._id
+                      ? houseObj.categoryDetail?._id
+                      : houseObj.categoryDetail
+                  }
+                  onChange={(data) => {
+                    console.log(data.target.value, "category change");
+                    setCurrObj({
+                      ...houseObj,
+                      // categoryId: data.target.value,
+                      categoryDetail: data.target.value
+                    });
+                  }}
+                >
+                  {category &&
+                    category.map((x: any) => (
+                      <MenuItem key={x._id} value={x._id}>
+                        {x.categoryname}
+                      </MenuItem>
+                    ))}
+                  {/* <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={20}>Twenty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem> */}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
         </DialogContent>

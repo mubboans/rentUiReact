@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import { useMemo } from "react";
 // import { TableProps } from "../../interface/users";
 // import { useTable } from "react-table";
@@ -57,6 +58,7 @@ type tableProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   action: any[] | null | undefined;
 };
+
 const TableHelper = ({ rows, columns, action }: tableProps) => {
   //   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
   //   const [selectedItem, setSelectedItem] = useState(null);
@@ -101,24 +103,11 @@ const TableHelper = ({ rows, columns, action }: tableProps) => {
         <TableHead>
           <TableRow>
             {columns &&
-              columns.map((column) => (
-                <StyledTableCell key={column} align="center">
-                  {column.toUpperCase()}
+              columns.map((newColumn: any) => (
+                <StyledTableCell key={newColumn} align="center">
+                  {newColumn.toUpperCase()}
                 </StyledTableCell>
               ))}
-            {/* columns.map((column) => {
-                return (
-                  column !== "_id" &&
-                  column !== "createdAt" &&
-                  column !== "updatedAt" &&
-                  column !== "_v" && (
-                    <StyledTableCell key={column} align="center">
-                      {column.toUpperCase()}
-                    </StyledTableCell>
-                  )
-                );
-              })   */}
-
             {action && action.length > 0 && (
               <StyledTableCell align="center">Action</StyledTableCell>
             )}
@@ -128,8 +117,9 @@ const TableHelper = ({ rows, columns, action }: tableProps) => {
           {rows &&
             rows.map((row, index) => (
               <StyledTableRow key={index}>
+                {/* old data */}
                 {columns &&
-                  columns.map((column) => (
+                  columns.map((column: any) => (
                     <StyledTableCell
                       align="center"
                       key={column}
@@ -139,20 +129,6 @@ const TableHelper = ({ rows, columns, action }: tableProps) => {
                       {row[column]}
                     </StyledTableCell>
                   ))}
-
-                {/* columns.map((column) => {
-                return (
-                  column !== "_id" &&
-                  column !== "createdAt" &&
-                  column !== "updatedAt" &&
-                  column !== "__v" && (
-                    <StyledTableCell key={column} align="center">
-                      {column.toUpperCase()}
-                    </StyledTableCell>
-                  )
-                );
-              }) */}
-
                 {action && action.length > 0 && (
                   <StyledTableCell align="center">
                     {action.map((d, index) => (
