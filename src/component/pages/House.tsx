@@ -57,9 +57,9 @@ const House = () => {
       const data = categoryData?.data?.data as Category[];
       setCategory(data);
       const rows = response?.data?.data as Houses[] | null;
-      const allKeys = rows
-        ? [...new Set(rows.flatMap((obj) => Object.keys(obj)))]
-        : null;
+      // const allKeys = rows
+      //   ? [...new Set(rows.flatMap((obj) => Object.keys(obj)))]
+      //   : null;
       // console.log(rows, allKeys);
       const d = rows?.map((x) => {
         return {
