@@ -31,7 +31,8 @@ const initialValues = { email: "", password: "" };
 
 const validationSchema = yup.object({
   email: yup.string().email("Invalid Email").required("Emall is required"),
-  password: yup.string().required("Password is required")
+  password: yup.string().required("Password is required"),
+  isTenant: yup.boolean().required("Please check")
 });
 
 const Login = () => {
@@ -48,7 +49,7 @@ const Login = () => {
       // const cookies = response?.headers?.get("Set-Cookie");
       // const cookies = response.headers?.get();
       setValue("token", response?.data?.data?.accessToken);
-      setValue("userdetail", response?.data);
+      setValue("userdetail", response?.data?.data);
       console.log("value set in local");
       ShowToast(dispatch, response?.data?.message, "success");
       console.log("Toast Show");
@@ -58,7 +59,7 @@ const Login = () => {
     } catch (error) {
       console.log(error, "error check");
       //@ts-ignore
-      ShowToast(dispatch, error?.response?.data?.message, "error");
+      ShowToast(dispatch, error?.response?.data?.error, "error");
       return error;
     }
   };
@@ -77,19 +78,9 @@ const Login = () => {
   ) => {
     event.preventDefault();
   };
-
-  // const formik = useFormik({
-  //   initialValues,
-  //   onSubmit,
-  //   validationSchema
-  // });
-  // console.log(formik.errors, "formik values");
-
   return (
     <>
       <ThemeProvider theme={defaultTheme}>
-        {/* <Container component="main" maxWidth="xs"> */}
-        {/* <CssBaseline /> */}
         <Grid
           container
           spacing={2}
@@ -98,7 +89,6 @@ const Login = () => {
             justifyContent: "center",
             alignItems: "center",
             marginTop: "20px"
-            // width: "100wh"
           }}
         >
           <Grid item xs={12} sm={4}>
@@ -110,9 +100,6 @@ const Login = () => {
               {(formik) => {
                 return (
                   <Box
-                    // component="form"
-                    // noValidate
-                    // onSubmit={formik.handleSubmit}
                     sx={{
                       marginTop: 8,
                       display: "flex",
@@ -205,7 +192,7 @@ const Login = () => {
                           />
                         </Grid>
 
-                        <Grid item xs={12}>
+                        <Grid item xs={6}>
                           <FormControlLabel
                             control={
                               <Checkbox
@@ -214,6 +201,33 @@ const Login = () => {
                               />
                             }
                             label="Remember me."
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Field name="isTenant">
+                            {({ field }: FieldProps) => (
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    color="primary"
+                                    onChange={(x) => {
+                                      formik.setFieldValue(
+                                        "isTenant",
+                                        x.target.checked
+                                      );
+                                      // console.log(x.target.checked, "x check");
+                                    }}
+                                  />
+                                }
+                                {...field}
+                                label="Tenant Login"
+                              />
+                            )}
+                          </Field>
+                          <ErrorMessage
+                            name="isTenant"
+                            component="div"
+                            className="errors-messg"
                           />
                         </Grid>
                       </Grid>

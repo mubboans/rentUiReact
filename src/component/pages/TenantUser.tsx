@@ -22,7 +22,8 @@ import {
   Select
 } from "@mui/material";
 import { User } from "../../interface/users";
-import { Tenant, Houses } from "../../interface/Category";
+import { getValue } from "../../helper/localhelper";
+
 type tenantState = {
   columnArr: string[] | null;
   rows: any[] | null;
@@ -32,52 +33,54 @@ type dialogState = {
   open: boolean;
   type: string;
 };
-const Tenants = () => {
+const userState = [
+  { label: "Active", value: true },
+  { label: "InActive", value: false }
+];
+const TenantUser = () => {
   const [modalData, setModalData] = useState<dialogState>({
-    title: "Tenants",
+    title: "Your Tenant User",
     open: false,
     type: "post"
   });
+  const UserDetail = getValue("userdetail");
+  console.log(UserDetail, "UserDetail");
+
   const dispatch = useDispatch();
-  const [tenantObj, setTeanantObj] = useState<Tenant>({});
+  const [tenantUserObj, setTeanantUserObj] = useState<User>({});
   const [tenantstate, setTenantState] = useState<tenantState | null>(null);
-  const [propertyArr, setPropertyArr] = useState<Houses | any>([]);
-  const [userArr, setUserArr] = useState<User | any>([]);
+
   const fetchDetail = async () => {
     try {
-      const response = await axiosConfig.get("/tenant");
-      const propertyData = await axiosConfig.get("/property");
-      const userData = await axiosConfig.get("/users?role=tenant");
-      const data = propertyData?.data?.data as Houses[];
-      const UserDropdown = userData?.data?.data as User[];
-      setPropertyArr(data);
-      setUserArr(UserDropdown);
-      const rows = response?.data?.data as Tenant[] | null;
+      const response = await axiosConfig.get("/tenantuser");
+      const rows = response?.data?.data as User[] | null;
       // const allKeys = rows
       //   ? [...new Set(rows.flatMap((obj) => Object.keys(obj)))]
       //   : null;
       // console.log(rows, allKeys);
-      const d = rows?.map((x) => {
-        return {
+      console.log(rows, "rows check");
+
+      const x = rows?.map((x) => {
+        const d = {
           ...x,
-          tenantname: x?.userDetail?.name,
-          contact: x?.userDetail?.contact,
-          housename: x?.houseDetail?.housename,
-          houseprice: x?.houseDetail?.price,
-          status: x?.houseDetail?.status
+          status: x.isActive ? "Active" : "Inactive",
+          createdon: x.createdAt
         };
+        delete d.createdAt;
+        return d;
       });
+      console.log(x, "x formated date");
+
       setTenantState((e: any) => ({
         ...e,
-        rows: d,
+        rows: x,
         columnArr: [
-          "tenantname",
+          "name",
+          "email",
           "contact",
-          "housename",
-          "houseprice",
-          "ouststanding_balance",
-          "otherdetail",
-          "status"
+          "status",
+          "createdon",
+          "password"
         ]
       }));
     } catch (error) {
@@ -92,19 +95,19 @@ const Tenants = () => {
     setModalData({
       ...modalData,
       open: true,
-      title: "Add New Tenants",
+      title: "Add New Tenants User",
       type: "post"
     });
-    setTeanantObj({});
+    setTeanantUserObj({});
   };
   const handleedit = (itemId: any) => {
     console.log(itemId, "itemId edit");
 
-    setTeanantObj({ ...itemId });
+    setTeanantUserObj({ ...itemId });
     setModalData({
       ...modalData,
       open: true,
-      title: "Edit Tenants",
+      title: "Edit Tenants User",
       type: "put"
     });
   };
@@ -119,28 +122,30 @@ const Tenants = () => {
       type: "post"
     });
   };
-  const querydata = async (type: string, obj: Tenant) => {
+  const querydata = async (type: string, obj: User) => {
     try {
       let response;
       const data = {
-        userDetail: obj.userDetail?._id,
-        houseDetail: obj.houseDetail?._id,
-        ouststanding_balance: obj.ouststanding_balance,
-        otherdetail: obj.otherdetail
+        name: obj.name,
+        email: obj.email,
+        contact: obj.contact,
+        isActive: obj.isActive,
+        password: obj.password,
+        confirmpassword: obj.password
       };
       if (type == "post") {
         // obj.categoryDetail = obj.categoryId;
-        response = await axiosConfig.post("/tenant", obj);
+        response = await axiosConfig.post("/tenantuser", obj);
       } else if (type == "put") {
         console.log("data", data);
 
-        response = await axiosConfig.put("/tenant", data, {
+        response = await axiosConfig.put("/tenantuser", data, {
           params: {
             _id: obj._id
           }
         });
       } else {
-        response = await axiosConfig.delete("/tenant", {
+        response = await axiosConfig.delete("/tenantuser", {
           params: { _id: obj._id }
         });
       }
@@ -182,10 +187,10 @@ const Tenants = () => {
           component: "form",
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
-            if (tenantObj._id) {
-              querydata("put", tenantObj);
+            if (tenantUserObj._id) {
+              querydata("put", tenantUserObj);
             } else {
-              querydata("post", tenantObj);
+              querydata("post", tenantUserObj);
             }
             // btndata.onclick()
           }
@@ -214,15 +219,15 @@ const Tenants = () => {
                 autoFocus
                 required
                 margin="dense"
-                name="housename"
-                label="Enter Other Detail"
+                name="Name"
+                label="Enter Name"
                 type="text"
                 fullWidth
-                value={tenantObj?.otherdetail}
+                value={tenantUserObj?.name}
                 variant="outlined"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   const d = e.target.value;
-                  setTeanantObj((x) => ({ ...x, otherdetail: d }));
+                  setTeanantUserObj((x) => ({ ...x, name: d }));
                 }}
               />
             </Grid>
@@ -284,17 +289,97 @@ const Tenants = () => {
               <TextField
                 required
                 margin="dense"
-                name="housename"
-                label="Enter Ouststanding Balance"
+                name="email"
+                label="Enter Email"
                 type="text"
                 fullWidth
-                value={tenantObj?.ouststanding_balance}
+                value={tenantUserObj?.email}
                 variant="outlined"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   const value = e.target.value;
-                  setTeanantObj({
-                    ...tenantObj,
-                    ouststanding_balance: value
+                  setTeanantUserObj({
+                    ...tenantUserObj,
+                    email: value
+                  });
+                }}
+              />
+            </Grid>
+
+            {/* <Grid
+              item
+              xs={12}
+              md={6}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <TextField
+                required
+                margin="dense"
+                name="email"
+                label="Enter Email"
+                type="text"
+                fullWidth
+                value={tenantUserObj?.email}
+                variant="outlined"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  const value = e.target.value;
+                  setTeanantUserObj({
+                    ...tenantUserObj,
+                    email: value
+                  });
+                }}
+              />
+            </Grid> */}
+            <Grid
+              item
+              xs={12}
+              md={6}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <TextField
+                required
+                margin="dense"
+                name="contact"
+                label="Enter Contact"
+                type="text"
+                fullWidth
+                value={tenantUserObj?.contact}
+                variant="outlined"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  const value = e.target.value;
+                  setTeanantUserObj({
+                    ...tenantUserObj,
+                    contact: value
+                  });
+                }}
+              />
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              md={6}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <TextField
+                required
+                margin="dense"
+                name="email"
+                label="Password"
+                type="text"
+                fullWidth
+                value={tenantUserObj?.password}
+                variant="outlined"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  const value = e.target.value;
+                  setTeanantUserObj({
+                    ...tenantUserObj,
+                    password: value
                   });
                 }}
               />
@@ -310,70 +395,25 @@ const Tenants = () => {
             >
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
-                  Select Property/House
+                  Update Status
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={
-                    tenantObj.houseDetail?._id
-                      ? tenantObj.houseDetail?._id
-                      : tenantObj.houseDetail
-                  }
-                  label="House Detail"
+                  value={tenantUserObj.isActive}
                   onChange={(data) => {
-                    console.log(data.target.value, "category change");
-                    setTeanantObj({
-                      ...tenantObj,
+                    setTeanantUserObj({
+                      ...tenantUserObj,
                       // categoryId: data.target.value,
-                      houseDetail: data.target.value
+                      isActive: data.target.value
                     });
                   }}
                 >
-                  {propertyArr &&
-                    propertyArr.map((x: any) => (
-                      <MenuItem key={x._id} value={x._id}>
-                        {x.housename}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              md={6}
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Select User
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={
-                    tenantObj.userDetail?._id
-                      ? tenantObj.userDetail?._id
-                      : tenantObj.userDetail
-                  }
-                  label="User Detail"
-                  onChange={(data) => {
-                    setTeanantObj({
-                      ...tenantObj,
-                      // categoryId: data.target.value,
-                      userDetail: data.target.value
-                    });
-                  }}
-                >
-                  {userArr &&
-                    userArr.map((x: any) => (
-                      <MenuItem key={x._id} value={x._id}>
-                        {x.name}
-                      </MenuItem>
-                    ))}
+                  {userState.map((x: any) => (
+                    <MenuItem key={x.value} value={x.value}>
+                      {x.label}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -386,7 +426,7 @@ const Tenants = () => {
       </Dialog>
 
       <CardLayout
-        title={"Tenants"}
+        title={"Your Tenants User"}
         onSubmit={onSubmit}
         tableComponent={
           <TableHelper
@@ -400,4 +440,4 @@ const Tenants = () => {
   );
 };
 
-export default Tenants;
+export default TenantUser;

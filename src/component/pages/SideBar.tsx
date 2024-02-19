@@ -22,10 +22,11 @@ import { useNavigate } from "react-router-dom";
 const sideBar = [
   { label: "House Type", icons: <CategoryIcon />, index: 1 },
   { label: "Houses", icons: <AddHomeIcon />, index: 2 },
-  { label: "Tenant", icons: <PersonIcon />, index: 3 },
-  { label: "Payment", icons: <Payment />, index: 4 },
+  { label: "TenantUser", icons: <PersonIcon />, index: 3 },
+  { label: "Tenant", icons: <Payment />, index: 4 },
   { label: "Reports", icons: <Assessment />, index: 5 },
-  { label: "Users", icons: <AssignmentInd />, index: 6 }
+  { label: "Payment", icons: <AssignmentInd />, index: 6 },
+  { label: "Users", icons: <AssignmentInd />, index: 7 }
 ];
 const SideBar = () => {
   const navigate = useNavigate();

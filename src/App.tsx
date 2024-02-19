@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import Register from "./component/auth/Register";
 import Login from "./component/auth/Login";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { lazy, Suspense, useEffect, useState } from "react";
 import Loader from "./component/pages/Loader";
 const Account = lazy(() => import("./component/pages/Account"));
@@ -9,6 +9,7 @@ const Profile = lazy(() => import("./component/pages/Profile"));
 const Payment = lazy(() => import("./component/pages/Payment"));
 const HouseType = lazy(() => import("./component/pages/HouseType"));
 const Tenants = lazy(() => import("./component/pages/Tenants"));
+const TenantsUser = lazy(() => import("./component/pages/TenantUser"));
 const Home = lazy(() => import("./component/pages/Home"));
 const Dashboard = lazy(() => import("./component/pages/Dashboard"));
 const TenantSignUp = lazy(() => import("./component/pages/TenantSignUp"));
@@ -28,11 +29,11 @@ import axiosConfig from "./helper/authApi";
 
 const App = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // const [show, setShow] = useState(false);
   //@ts-expect-error
   const { isUserLogin } = useSelector((state) => state.custom) || {};
   useEffect(() => {
-    console.log(isUserLogin, " ");
     //  async function checkUserStatus() {
     //   try {
 
@@ -41,17 +42,22 @@ const App = () => {
     //   }
     //  }
     //  checkUserStatus()
-    (async () => {
-      try {
-        await axiosConfig.get("/users/status");
-        // setShow(false);
-        ChangeUserSession(dispatch, false);
-      } catch (error) {
-        console.log(error, "error");
-        // setShow(true);
-        ChangeUserSession(dispatch, true);
-      }
-    })();
+
+    if (!isUserLogin) {
+      navigate("/login");
+    } else {
+      (async () => {
+        try {
+          await axiosConfig.get("/users/status");
+          // setShow(false);
+          ChangeUserSession(dispatch, false);
+        } catch (error) {
+          console.log(error, "error");
+          // setShow(true);
+          ChangeUserSession(dispatch, true);
+        }
+      })();
+    }
     setuserLoggedin(isUserLogin);
   }, [isUserLogin]);
   const [userLoggedin, setuserLoggedin] = useState<boolean>(isUserLogined());
@@ -78,6 +84,7 @@ const App = () => {
           <Route path="/tenantsignup" element={<TenantSignUp />} />
           <Route path="/report" element={<Report />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/tenantuser" element={<TenantsUser />} />
           <Route path="*" element={<RouteNotFound />} />
         </Routes>
       </Suspense>

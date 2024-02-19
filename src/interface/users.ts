@@ -11,6 +11,9 @@ export interface User {
     isActive?: string,
     profileImg?: string,
     isDeleted?: string,
+    _id?: string,
+    createdAt?: Date,
+    updatedAt?: Date,
 }
 type columnHeader = {
     Header?: string,
