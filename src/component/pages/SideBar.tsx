@@ -49,11 +49,7 @@ const SideBar = () => {
   };
   return (
     <>
-      <IconButton
-        style={{ color: "white" }}
-        onClick={toggleDrawer(true)}
-        aria-label="Show Menu"
-      >
+      <IconButton style={{ color: "black" }} onClick={toggleDrawer(true)}>
         <ListIcon />
       </IconButton>
       <Drawer anchor={"left"} open={showbar} onClose={toggleDrawer(false)}>

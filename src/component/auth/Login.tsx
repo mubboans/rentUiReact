@@ -27,12 +27,12 @@ interface loginData {
   email?: string;
   password?: string;
 }
-const initialValues = { email: "", password: "" };
+const initialValues = { email: "", password: "",isTenant:true  };
 
 const validationSchema = yup.object({
   email: yup.string().email("Invalid Email").required("Emall is required"),
   password: yup.string().required("Password is required"),
-  isTenant: yup.boolean().required("Please check")
+  isTenant: yup.boolean().default(true)
 });
 
 const Login = () => {
@@ -210,6 +210,7 @@ const Login = () => {
                                 control={
                                   <Checkbox
                                     color="primary"
+                                    checked={field.value}
                                     onChange={(x) => {
                                       formik.setFieldValue(
                                         "isTenant",
@@ -224,11 +225,6 @@ const Login = () => {
                               />
                             )}
                           </Field>
-                          <ErrorMessage
-                            name="isTenant"
-                            component="div"
-                            className="errors-messg"
-                          />
                         </Grid>
                       </Grid>
                       <Button

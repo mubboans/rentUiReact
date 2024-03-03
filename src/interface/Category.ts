@@ -35,3 +35,20 @@ export interface Tenant {
     updatedAt?: Date;
 }
 
+export interface Payments {
+    _id?: string;
+    tenantdetail?: any;
+    housedetail?: any;
+    amount?: number;
+    maintainance?: number;
+    maintainanceremark?: string;
+    electricbill?: string;
+    electricbillremark?: string;
+    createdBy?: string;
+    otherdetail?: string;
+    mode?: string;
+    type?: string;
+    collectedOn?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}

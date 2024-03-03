@@ -15,6 +15,7 @@ const Dashboard = lazy(() => import("./component/pages/Dashboard"));
 const TenantSignUp = lazy(() => import("./component/pages/TenantSignUp"));
 const RouteNotFound = lazy(() => import("./component/pages/RouteNotFound"));
 const Report = lazy(() => import("./component/pages/Report"));
+const Highlights = lazy(() => import("./component/pages/Highlights"));
 const Users = lazy(() => import("./component/pages/Users"));
 const House = lazy(() => import("./component/pages/House"));
 import "./styles/app.scss";
@@ -85,6 +86,8 @@ const App = () => {
           <Route path="/report" element={<Report />} />
           <Route path="/users" element={<Users />} />
           <Route path="/tenantuser" element={<TenantsUser />} />
+          <Route path="/highlights" element={<Highlights />} />
+
           <Route path="*" element={<RouteNotFound />} />
         </Routes>
       </Suspense>

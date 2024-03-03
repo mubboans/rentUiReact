@@ -22,7 +22,7 @@ import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import { useDispatch } from "react-redux";
 import SideBar from "./SideBar";
 
-const pages = ["Home", "Product", "Pricing", "Blog"];
+const pages = ["Home", "Highlights", "Pricing", "Blog"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const settings = [
   { label: "Profile", icons: <AccountCircleOutlinedIcon /> },
@@ -33,6 +33,7 @@ const settings = [
 type loginCheck = {
   userLoggedin?: boolean;
 };
+
 const Navbar = ({ userLoggedin }: loginCheck) => {
   // const location = useLocation();
   // console.log(userLoggedin, "userLoggedin check");
@@ -93,11 +94,41 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar
+      position="sticky"
+      sx={{
+        boxShadow: 0,
+        bgcolor: "transparent",
+        backgroundImage: "none",
+        mt: 1,
+        mb: 2
+      }}
+    >
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar
+          color="text.primary"
+          variant="regular"
+          sx={() => ({
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexShrink: 0,
+            borderRadius: "999px",
+            bgcolor: "rgba(255, 255, 255, 0.4)",
+            backdropFilter: "blur(24px)",
+            maxHeight: 40,
+            border: "1px solid",
+            borderColor: "divider",
+            boxShadow:
+              //    `0 0 1px rgba(85, 166, 246, 0.1), 1px 1.5px 2px -1px rgba(85, 166, 246, 0.15), 4px 4px 12px -2.5px rgba(85, 166, 246, 0.15)`
+
+              "0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)"
+          })}
+        >
           <SideBar />
-          <DomainAddIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <DomainAddIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1, color: "black" }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -109,9 +140,10 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
               fontFamily: "monospace",
               fontWeight: 700,
               //   letterSpacing: ".3rem",
-              color: "inherit",
+
               textDecoration: "none"
             }}
+            color="text.primary"
           >
             Apna Rent
           </Typography>
@@ -123,10 +155,13 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
             >
               <DomainAddIcon
-                sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  mr: 1,
+                  color: "black"
+                }}
               />
               {/* <AccountCircleIcon /> */}
             </IconButton>
@@ -137,6 +172,7 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
                 vertical: "bottom",
                 horizontal: "left"
               }}
+              color="text.primary"
               keepMounted
               transformOrigin={{
                 vertical: "top",
@@ -155,14 +191,18 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
                       key={page}
                       onClick={() => handleCloseNavMenu(page)}
                     >
-                      <Typography textAlign="center">{page}</Typography>
+                      <Typography color="text.primary" textAlign="center">
+                        {page}
+                      </Typography>
                     </MenuItem>
                   ))}
               </>
             </Menu>
           </Box>
 
-          <DomainAddIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <DomainAddIcon
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1, color: "black" }}
+          />
           <Typography
             variant="h5"
             noWrap
@@ -178,6 +218,7 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
               color: "inherit",
               textDecoration: "none"
             }}
+            color="text.primary"
           >
             Apna Rent
           </Typography>
@@ -189,7 +230,7 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
                     key={page}
                     onClick={() => handleCloseNavMenu(page)}
                     // onClick={handleCloseNavMenu(page)}
-                    sx={{ my: 2, color: "white", display: "block" }}
+                    sx={{ my: 2, color: "black", display: "block" }}
                   >
                     {page}
                   </Button>
@@ -200,12 +241,12 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
           <Box sx={{ flexGrow: 0 }}>
             {/* <Tooltip title="Open settings"> */}
             <IconButton
+              style={{ color: "black" }}
               onClick={handleOpenUserMenu}
               sx={{ p: 0 }}
               size="large"
-              color="inherit"
             >
-              <AccountCircleIcon />
+              <AccountCircleIcon style={{ color: "black" }} />
             </IconButton>
             {/* </Tooltip> */}
             <Menu
@@ -223,6 +264,7 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
+              color="text.primary"
             >
               {/* {settings.map((setting) => (
                 <MenuItem
@@ -242,12 +284,17 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
                   {settings.map((setting) => (
                     <MenuItem
                       key={setting.label}
+                      style={{ color: "black" }}
                       onClick={() => {
                         handleCloseUserMenu(setting.label);
                       }}
                     >
                       {setting.icons}
-                      <Typography key={setting.label} textAlign="center">
+                      <Typography
+                        color="text.primary"
+                        key={setting.label}
+                        textAlign="center"
+                      >
                         {setting.label}
                       </Typography>
                     </MenuItem>
@@ -256,11 +303,14 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
               ) : (
                 <>
                   <MenuItem
+                    color="text.primary"
                     onClick={() => {
                       handleCloseUserMenu("Login");
                     }}
                   >
-                    <Typography textAlign="center">Login</Typography>
+                    <Typography color="text.primary" textAlign="center">
+                      Login
+                    </Typography>
                   </MenuItem>
                 </>
               )}

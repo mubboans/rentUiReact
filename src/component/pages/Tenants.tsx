@@ -47,7 +47,7 @@ const Tenants = () => {
     try {
       const response = await axiosConfig.get("/tenant");
       const propertyData = await axiosConfig.get("/property");
-      const userData = await axiosConfig.get("/users?role=tenant");
+      const userData = await axiosConfig.get("/tenantuser");
       const data = propertyData?.data?.data as Houses[];
       const UserDropdown = userData?.data?.data as User[];
       setPropertyArr(data);
@@ -64,7 +64,7 @@ const Tenants = () => {
           contact: x?.userDetail?.contact,
           housename: x?.houseDetail?.housename,
           houseprice: x?.houseDetail?.price,
-          status: x?.houseDetail?.status
+          "property-status": x?.houseDetail?.status
         };
       });
       setTenantState((e: any) => ({
@@ -75,9 +75,9 @@ const Tenants = () => {
           "contact",
           "housename",
           "houseprice",
+          "property-status",
           "ouststanding_balance",
-          "otherdetail",
-          "status"
+          "otherdetail"
         ]
       }));
     } catch (error) {
