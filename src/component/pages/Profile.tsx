@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import axiosConfig from "../../helper/authApi";
-import { User, Users } from "../../interface/users";
+import { User } from "../../interface/users";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getValue } from "../../helper/localhelper";
@@ -17,14 +16,8 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import { CalendarMonthOutlined } from "@mui/icons-material";
 import moment from "moment";
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
+import { ShowToast } from "../../helper/ToastHelper";
+
 // interface
 const Profile = () => {
   const dispatch = useDispatch();
@@ -53,13 +46,32 @@ const Profile = () => {
   };
   useEffect(() => {
     fetchDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  function updateUser(obj: Users) {
+  async function updateUser(obj: User) {
+    console.log("hit api");
     try {
-      const d = ShowToast(dispatch, d?.response?.data?.message, "success");
+      const data = {
+        name: obj.name,
+        email: obj.email,
+        contact: obj.contact
+      };
+      const d = await axiosConfig.put("/users", data, {
+        params: {
+          _id: obj._id
+        }
+      });
+      ShowToast(
+        dispatch,
+        d?.data?.message ? d?.data?.message : "Updated User",
+        "success"
+      );
     } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       ShowToast(dispatch, error?.response?.data?.message, "error");
     }
+    await fetchDetail();
   }
   return (
     <div>
@@ -103,6 +115,10 @@ const Profile = () => {
                 variant="outlined"
                 value={userObj.name}
                 label="Name"
+                type="text"
+                onChange={(x: React.ChangeEvent<HTMLInputElement>) => {
+                  setUserObj({ ...userObj, name: x.target.value });
+                }}
               />
             </Grid>
             <Grid
@@ -120,6 +136,10 @@ const Profile = () => {
                 variant="outlined"
                 value={userObj.email}
                 label="Email"
+                onChange={(x: React.ChangeEvent<HTMLInputElement>) => {
+                  setUserObj({ ...userObj, email: x.target.value });
+                }}
+                type="text"
               />
             </Grid>
             <Grid
@@ -137,6 +157,9 @@ const Profile = () => {
                 variant="outlined"
                 value={userObj.contact}
                 label="Contact"
+                onChange={(x: React.ChangeEvent<HTMLInputElement>) => {
+                  setUserObj({ ...userObj, contact: x.target.value });
+                }}
               />
             </Grid>
 
@@ -187,7 +210,11 @@ const Profile = () => {
             justifyContent: "center"
           }}
         >
-          <Button size="small" variant="outlined" onClick={updateUser}>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={() => updateUser(userObj)}
+          >
             Update
           </Button>
         </CardActions>

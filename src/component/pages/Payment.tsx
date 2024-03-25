@@ -22,7 +22,7 @@ import {
   Select
 } from "@mui/material";
 import { User } from "../../interface/users";
-import { Tenant, Houses, Payments } from "../../interface/Category";
+import { Houses, Payments } from "../../interface/Category";
 import { getValue } from "../../helper/localhelper";
 type paymentState = {
   columnArr: string[] | null;

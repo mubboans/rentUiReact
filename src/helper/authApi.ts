@@ -2,9 +2,8 @@ import axios from "axios";
 import { getValue } from "./localhelper";
 // import baseUrl from
 const axiosConfig = axios.create({
-    baseURL: "http://localhost:8001/apna-rent/v1/",
-    // withCredentials: true,
-
+    // baseURL: "http://localhost:8001/apna-rent/v1/",
+    baseURL: "https://rentservernode.onrender.com/apna-rent/v1/",
 })
 
 axiosConfig.interceptors.request.use(
