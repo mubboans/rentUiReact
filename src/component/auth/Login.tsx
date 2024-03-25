@@ -22,12 +22,13 @@ import { ChangeUserState, setValue } from "../../helper/localhelper";
 import { useNavigate } from "react-router-dom";
 import { ShowToast } from "../../helper/ToastHelper";
 import { useDispatch } from "react-redux";
+import Alert from "@mui/material/Alert";
 const defaultTheme = createTheme();
 interface loginData {
   email?: string;
   password?: string;
 }
-const initialValues = { email: "", password: "",isTenant:true  };
+const initialValues = { email: "", password: "", isTenant: true };
 
 const validationSchema = yup.object({
   email: yup.string().email("Invalid Email").required("Emall is required"),
@@ -225,6 +226,18 @@ const Login = () => {
                               />
                             )}
                           </Field>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <div
+                            className={`rounded-b px-4 py-3 mb-4 shadow-md pointer-events-auto blinker`}
+                            role="alert"
+                          >
+                            {formik.getFieldProps("isTenant").value && (
+                              <Alert severity="warning">
+                                You will be login as a tenant!.
+                              </Alert>
+                            )}
+                          </div>
                         </Grid>
                       </Grid>
                       <Button

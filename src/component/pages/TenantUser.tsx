@@ -123,6 +123,12 @@ const TenantUser = () => {
     });
   };
   const querydata = async (type: string, obj: User) => {
+    setModalData({
+      ...modalData,
+      open: false,
+      title: modalData.title,
+      type: "post"
+    });
     try {
       let response;
       const data = {
@@ -135,7 +141,10 @@ const TenantUser = () => {
       };
       if (type == "post") {
         // obj.categoryDetail = obj.categoryId;
-        response = await axiosConfig.post("/tenantuser", obj);
+        response = await axiosConfig.post(
+          `/tenantuser?name=${UserDetail.name}`,
+          obj
+        );
       } else if (type == "put") {
         console.log("data", data);
 
@@ -150,14 +159,11 @@ const TenantUser = () => {
         });
       }
       fetchDetail();
-      setModalData({
-        ...modalData,
-        open: false,
-        title: modalData.title,
-        type: "post"
-      });
+
       ShowToast(dispatch, response?.data?.message, "success");
     } catch (error) {
+      console.log(error, "error in post");
+
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       ShowToast(dispatch, error?.response?.data?.message, "error");

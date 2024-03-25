@@ -37,4 +37,14 @@
     }
   }
 
-  
+  @keyframes blinker {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  .blinker {
+    animation: blinker 3s infinite; /* Blink every 2 seconds */
+  }  

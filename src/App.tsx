@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import Register from "./component/auth/Register";
 import Login from "./component/auth/Login";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense, useEffect, useState } from "react";
 import Loader from "./component/pages/Loader";
 const Account = lazy(() => import("./component/pages/Account"));
@@ -16,6 +16,7 @@ const TenantSignUp = lazy(() => import("./component/pages/TenantSignUp"));
 const RouteNotFound = lazy(() => import("./component/pages/RouteNotFound"));
 const Report = lazy(() => import("./component/pages/Report"));
 const Highlights = lazy(() => import("./component/pages/Highlights"));
+const Pricing = lazy(() => import("./component/pages/Pricing"));
 const Users = lazy(() => import("./component/pages/Users"));
 const House = lazy(() => import("./component/pages/House"));
 import "./styles/app.scss";
@@ -25,32 +26,21 @@ import { ChangeUserSession, isUserLogined } from "./helper/localhelper";
 import { useDispatch, useSelector } from "react-redux";
 import UserLoginModal from "./component/pages/UserLoginModal";
 import axiosConfig from "./helper/authApi";
-// import axiosConfig from "./helper/authApi";
-// import UserLoginModal from "./component/pages/UserLoginModal";
+import ProtectedRoute from "./component/auth/ProtectedRoute";
 
 const App = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  // const [show, setShow] = useState(false);
   //@ts-expect-error
   const { isUserLogin } = useSelector((state) => state.custom) || {};
   useEffect(() => {
-    //  async function checkUserStatus() {
-    //   try {
+    console.log(isUserLogin, "isUserLogin");
 
-    //   } catch (error) {
-
-    //   }
-    //  }
-    //  checkUserStatus()
-
-    if (!isUserLogin) {
-      navigate("/login");
-    } else {
+    if (isUserLogin) {
       (async () => {
         try {
           await axiosConfig.get("/users/status");
           // setShow(false);
+
           ChangeUserSession(dispatch, false);
         } catch (error) {
           console.log(error, "error");
@@ -58,8 +48,8 @@ const App = () => {
           ChangeUserSession(dispatch, true);
         }
       })();
+      setuserLoggedin(isUserLogin);
     }
-    setuserLoggedin(isUserLogin);
   }, [isUserLogin]);
   const [userLoggedin, setuserLoggedin] = useState<boolean>(isUserLogined());
   // const userLoggedin = isUserLogined();
@@ -73,21 +63,116 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
-          <Route path="/account" element={<Account />}></Route>
-          <Route path="/profile" element={<Profile />}></Route>
-          <Route path="/payment" element={<Payment />}></Route>
-          <Route path="/housetype" element={<HouseType />}></Route>
-          <Route path="/home" element={<Home />}></Route>
-          <Route path="/houses" element={<House />}></Route>
-          <Route path="/tenant" element={<Tenants />}></Route>
-          <Route path="/tenantsignup" element={<TenantSignUp />} />
-          <Route path="/report" element={<Report />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/tenantuser" element={<TenantsUser />} />
-          <Route path="/highlights" element={<Highlights />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute isAuthenticated={isUserLogin} Component={Home} />
+            }
+          ></Route>
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute
+                isAuthenticated={isUserLogin}
+                Component={Dashboard}
+              />
+            }
+          ></Route>
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute
+                isAuthenticated={isUserLogin}
+                Component={Account}
+              />
+            }
+          ></Route>
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute
+                isAuthenticated={isUserLogin}
+                Component={Profile}
+              />
+            }
+          ></Route>
+          <Route
+            path="/payment"
+            element={
+              <ProtectedRoute
+                isAuthenticated={isUserLogin}
+                Component={Payment}
+              />
+            }
+          ></Route>
+          <Route
+            path="/housetype"
+            element={
+              <ProtectedRoute
+                isAuthenticated={isUserLogin}
+                Component={HouseType}
+              />
+            }
+          ></Route>
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute isAuthenticated={isUserLogin} Component={Home} />
+            }
+          ></Route>
+          <Route
+            path="/houses"
+            element={
+              <ProtectedRoute isAuthenticated={isUserLogin} Component={House} />
+            }
+          ></Route>
 
+          <Route
+            path="/tenant"
+            element={
+              <ProtectedRoute
+                // path="/tenant"
+                isAuthenticated={isUserLogin}
+                Component={Tenants}
+              />
+            }
+          ></Route>
+          {/* </ProtectedRoute> */}
+          <Route
+            path="/tenantsignup"
+            element={
+              <ProtectedRoute
+                isAuthenticated={isUserLogin}
+                Component={TenantSignUp}
+              />
+            }
+          />
+          <Route
+            path="/report"
+            element={
+              <ProtectedRoute
+                isAuthenticated={isUserLogin}
+                Component={Report}
+              />
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute isAuthenticated={isUserLogin} Component={Users} />
+            }
+          />
+          <Route
+            path="/tenantuser"
+            element={
+              <ProtectedRoute
+                isAuthenticated={isUserLogin}
+                Component={TenantsUser}
+              />
+            }
+          />
+          <Route path="/highlights" element={<Highlights />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="*" element={<RouteNotFound />} />
         </Routes>
       </Suspense>

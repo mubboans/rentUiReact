@@ -28,6 +28,8 @@ import { ShowToast } from "../../helper/ToastHelper";
 const defaultTheme = createTheme();
 
 const Register = () => {
+  console.log("Register");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   async function RegisterUser(obj: User) {

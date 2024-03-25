@@ -1,4 +1,3 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
@@ -57,9 +56,9 @@ export default function Highlights() {
       id="highlights"
       sx={{
         pt: { xs: 4, sm: 12 },
-        pb: { xs: 8, sm: 16 }
+        pb: { xs: 8, sm: 16 },
         // color: "white",
-        // bgcolor: "#06090a"
+        color: "#06090a"
       }}
     >
       <Container
@@ -80,18 +79,17 @@ export default function Highlights() {
           <Typography component="h2" variant="h4">
             Highlights
           </Typography>
-          <Typography variant="body1" sx={{ color: "grey.400" }}>
+          <Typography variant="body1">
             Explore why our product stands out: adaptability, durability,
             user-friendly design, and innovation. Enjoy reliable customer
             support and precision in every detail.
           </Typography>
         </Box>
-        <Grid container spacing={2.5}>
+        <Grid container spacing={8}>
           {items.map((item, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Stack
                 direction="column"
-                // color="inherit"
                 component={Card}
                 spacing={1}
                 useFlexGap
@@ -99,9 +97,10 @@ export default function Highlights() {
                   p: 3,
                   height: "100%",
                   border: "1px solid",
-                  //   borderColor: "grey.800",
-                  background: "transparent"
-                  //   backgroundColor: "grey.900"
+                  borderColor: "#06090a",
+                  // background: "transparent",
+                  // backgroundColor: "grey.900",
+                  borderRadius: "10px"
                 }}
               >
                 <Box sx={{ opacity: "50%" }}>{item.icon}</Box>
@@ -109,9 +108,7 @@ export default function Highlights() {
                   <Typography fontWeight="medium" gutterBottom>
                     {item.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "grey.400" }}>
-                    {item.description}
-                  </Typography>
+                  <Typography variant="body2">{item.description}</Typography>
                 </div>
               </Stack>
             </Grid>

@@ -163,6 +163,24 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
                   color: "black"
                 }}
               />
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="#"
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  //   letterSpacing: ".3rem",
+
+                  textDecoration: "none"
+                }}
+                color="text.primary"
+              >
+                Apna Rent
+              </Typography>
               {/* <AccountCircleIcon /> */}
             </IconButton>
             <Menu
@@ -215,7 +233,7 @@ const Navbar = ({ userLoggedin }: loginCheck) => {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: "black",
               textDecoration: "none"
             }}
             color="text.primary"
