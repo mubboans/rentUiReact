@@ -42,7 +42,7 @@ const Register = () => {
       setBtnText("Register");
       ShowToast(dispatch, response?.data?.message, "success");
       ChangeUserState(dispatch, true);
-      navigate("/home");
+      navigate("/houses");
       // return response.data;
     } catch (e) {
       setBtnText("Retry");

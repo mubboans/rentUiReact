@@ -229,7 +229,7 @@ const Login = () => {
                         </Grid>
                         <Grid item xs={12}>
                           <div
-                            className={`rounded-b px-4 py-3 mb-4 shadow-md pointer-events-auto blinker`}
+                            className={`rounded-b px-4 py-3 mb-4 shadow-md pointer-events-auto`}
                             role="alert"
                           >
                             {formik.getFieldProps("isTenant").value && (

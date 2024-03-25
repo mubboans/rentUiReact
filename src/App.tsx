@@ -32,10 +32,11 @@ const App = () => {
   const dispatch = useDispatch();
   //@ts-expect-error
   const { isUserLogin } = useSelector((state) => state.custom) || {};
+  const [userLoggedin, setuserLoggedin] = useState<boolean>(isUserLogined());
   useEffect(() => {
     console.log(isUserLogin, "isUserLogin");
 
-    if (isUserLogin) {
+    if (userLoggedin) {
       (async () => {
         try {
           await axiosConfig.get("/users/status");
@@ -50,15 +51,15 @@ const App = () => {
       })();
       setuserLoggedin(isUserLogin);
     }
-  }, [isUserLogin]);
-  const [userLoggedin, setuserLoggedin] = useState<boolean>(isUserLogined());
+  }, [userLoggedin]);
+
   // const userLoggedin = isUserLogined();
 
   return (
     <>
       <Toast />
       <UserLoginModal />
-      <Navbar userLoggedin={userLoggedin} />
+      <Navbar userLoggedin={isUserLogin} />
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/login" element={<Login />}></Route>

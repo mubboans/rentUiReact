@@ -31,7 +31,7 @@ const settings = [
   { label: "Logout", icons: <ExitToAppOutlinedIcon /> }
 ];
 type loginCheck = {
-  userLoggedin?: boolean;
+  userLoggedin?: false;
 };
 
 const Navbar = ({ userLoggedin }: loginCheck) => {
