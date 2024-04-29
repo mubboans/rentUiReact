@@ -41,7 +41,7 @@ const Register = () => {
       setValue("userdetail", response?.data);
       setBtnText("Register");
       ShowToast(dispatch, response?.data?.message, "success");
-      ChangeUserState(dispatch, true);
+      ChangeUserState(dispatch, "userState", true);
       navigate("/houses");
       // return response.data;
     } catch (e) {

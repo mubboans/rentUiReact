@@ -2,7 +2,7 @@
 import Register from "./component/auth/Register";
 import Login from "./component/auth/Login";
 import { Route, Routes } from "react-router-dom";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import Loader from "./component/pages/Loader";
 const Account = lazy(() => import("./component/pages/Account"));
 const Profile = lazy(() => import("./component/pages/Profile"));
@@ -22,7 +22,11 @@ const House = lazy(() => import("./component/pages/House"));
 import "./styles/app.scss";
 import Toast from "./component/pages/Toast";
 import Navbar from "./component/pages/Navbar";
-import { ChangeUserSession, isUserLogined } from "./helper/localhelper";
+import {
+  ChangeUserSession,
+  ChangeUserState
+  // isUserLogined
+} from "./helper/localhelper";
 import { useDispatch, useSelector } from "react-redux";
 import UserLoginModal from "./component/pages/UserLoginModal";
 import axiosConfig from "./helper/authApi";
@@ -30,35 +34,40 @@ import ProtectedRoute from "./component/auth/ProtectedRoute";
 
 const App = () => {
   const dispatch = useDispatch();
-  //@ts-expect-error
-  const { isUserLogin } = useSelector((state) => state.custom) || {};
-  const [userLoggedin, setuserLoggedin] = useState<boolean>(isUserLogined());
+  const { isUserLogin, tokenstatus } =
+    //@ts-expect-error9
+    useSelector((state) => state.custom) || {};
+  // const [userLoggedin, setuserLoggedin] = useState<boolean>(isUserLogined());
   useEffect(() => {
     console.log(isUserLogin, "isUserLogin");
-
-    if (userLoggedin) {
+    //   console.log(userLoggedin, "userLoggedin checkk");
+    if (isUserLogin && tokenstatus == "invalid") {
       (async () => {
         try {
           await axiosConfig.get("/users/status");
           // setShow(false);
-
           ChangeUserSession(dispatch, false);
+          ChangeUserState(dispatch, "userTokenStatus", "valid");
+          ChangeUserState(dispatch, "userState", true);
         } catch (error) {
           console.log(error, "error");
           // setShow(true);
-          ChangeUserSession(dispatch, true);
+          ChangeUserState(dispatch, "userTokenStatus", "invalid");
+          ChangeUserState(dispatch, "userState", false);
+          ChangeUserSession(dispatch, false);
         }
       })();
-      setuserLoggedin(isUserLogin);
     }
-  }, [userLoggedin]);
+    //   if (userLoggedin) {
+    //     setuserLoggedin(isUserLogin);
+  }, [isUserLogin]);
 
   // const userLoggedin = isUserLogined();
 
   return (
     <>
       <Toast />
-      <UserLoginModal />
+      <UserLoginModal isUserLogin={isUserLogin} />
       <Navbar userLoggedin={isUserLogin} />
       <Suspense fallback={<Loader />}>
         <Routes>

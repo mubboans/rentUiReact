@@ -14,9 +14,10 @@ export const setValue = (name: string, value: object) => {
 export const isUserLogined = () => {
     return !!localStorage.getItem('token');
 }
-export function ChangeUserState(dispatch: Dispatch<AnyAction>, state: boolean) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function ChangeUserState(dispatch: Dispatch<AnyAction>, type: string, state: any) {
     dispatch({
-        type: "userState",
+        type: type,
         payload: state
     })
 }
@@ -32,5 +33,5 @@ export function LogoutUser(dispatch: Dispatch<AnyAction>) {
     localStorage.removeItem('token');
     localStorage.removeItem('userdetail');
     localStorage.clear();
-    ChangeUserState(dispatch, false)
+    ChangeUserState(dispatch, "userState", false)
 }

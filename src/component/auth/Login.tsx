@@ -54,7 +54,7 @@ const Login = () => {
       console.log("value set in local");
       ShowToast(dispatch, response?.data?.message, "success");
       console.log("Toast Show");
-      ChangeUserState(dispatch, true);
+      ChangeUserState(dispatch, "userState", true);
       navigate("/houses");
       return response;
     } catch (error) {
@@ -229,7 +229,7 @@ const Login = () => {
                         </Grid>
                         <Grid item xs={12}>
                           <div
-                            className={`rounded-b px-4 py-3 mb-4 shadow-md pointer-events-auto`}
+                            className={`rounded-b px-4 py-3 mb-4 shadow-md pointer-events-autome`}
                             role="alert"
                           >
                             {formik.getFieldProps("isTenant").value && (

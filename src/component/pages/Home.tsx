@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import Chip from "@mui/material/Chip";
-import Profile from "./Profile";
+// import Profile from "./Profile";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import { Button, Paper } from "@mui/material";
@@ -85,7 +85,7 @@ const Home = () => {
           </Item>
         </Grid>
 
-        <Grid
+        {/* <Grid
           item
           xs={10}
           direction="row"
@@ -106,7 +106,7 @@ const Home = () => {
           <Item>
             <Profile />
           </Item>
-        </Grid>
+        </Grid> */}
       </Grid>
     </div>
   );

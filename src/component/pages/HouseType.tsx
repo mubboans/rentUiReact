@@ -17,6 +17,7 @@ import {
   Button,
   TextField
 } from "@mui/material";
+import { getValue } from "../../helper/localhelper";
 // import { ChangeUserSession } from "../../helper/localhelper";
 // import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from "@mui/material";
 type categoryState = {
@@ -40,6 +41,10 @@ const HouseType = () => {
 
   const fetchHouseCategory = async () => {
     try {
+      const token = getValue("token");
+      console.log(token, "toekn check");
+      console.log("api called");
+
       const response = await axiosConfig.get("/category");
       const rows = response?.data?.data as Category[] | null;
       const allKeys = rows

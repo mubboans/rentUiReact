@@ -20,7 +20,26 @@ axiosConfig.interceptors.request.use(
         return config;
     },
     (error) => {
+        console.log('error axios', error);
+
         return Promise.reject(error);
+    }
+);
+axiosConfig.interceptors.response.use(
+    (response) => {
+        return response; // Pass through successful responses
+    },
+    (error) => {
+        // Handle API errors here
+        console.error('error response: axios', error.response); // Log the error response
+        // ChangeUserState(useDispatch(), false)
+        // Dispatch an action to store the error in Redux or your state management solution
+        // (assuming you're using a state management library)
+
+        // Display an error message to the user (optional)
+        // You can use a toast notification library or display the error in your component
+
+        return Promise.reject(error); // Re-throw the error for further handling
     }
 );
 axiosConfig.defaults.headers.common['Content-Type'] = 'application/json'

@@ -1,6 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit"
 import { isUserLogined } from "../helper/localhelper"
-
 const intialState = {
     a: 0,
     b: "Mubashir",
@@ -11,6 +10,7 @@ const intialState = {
     },
     isUserLogin: isUserLogined(),
     session: false,
+    tokenstatus: isUserLogined() ? 'invalid' : 'valid',
 }
 
 export const customreducer = createReducer(intialState, {
@@ -34,5 +34,8 @@ export const customreducer = createReducer(intialState, {
     },
     userSession: (state, action) => {
         state.session = action.payload;
+    },
+    userTokenStatus: (state, action) => {
+        state.tokenstatus = action.payload;
     }
 })

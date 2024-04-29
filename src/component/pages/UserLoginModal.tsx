@@ -8,33 +8,52 @@ import {
 } from "@mui/material";
 // import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ChangeUserSession, LogoutUser } from "../../helper/localhelper";
-import { useEffect } from "react";
+import {
+  ChangeUserSession,
+  // getValue,
+  LogoutUser
+} from "../../helper/localhelper";
+// import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const UserLoginModal = () => {
+import { useState } from "react";
+interface loginProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  isUserLogin: any;
+}
+const UserLoginModal = ({ isUserLogin }: loginProps) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-expect-error
-  const { session } = useSelector((state) => state.custom) || {};
-  console.log(session, "session");
-  //   const [show, setshow] = useState(false);
-  useEffect(() => {
-    console.log(session, "session");
-    // setshow(session);
-  }, [session]);
+  const { tokenstatus } = useSelector((state) => state.custom) || {};
+  console.log(isUserLogin, tokenstatus, "session data check");
+  const [show, setshow] = useState(() =>
+    isUserLogin && tokenstatus == "invalid" ? true : false
+  );
+  // useEffect(() => {
+  //   console.log(isUserLogin, "session");
+  //   const token = getValue("token");
+  //   console.log(token, "toekn check");
+  //   if (!token) {
+  //     navigate("/login");
+  //   }
+  //   setshow(isUserLogin);
+  // }, [isUserLogin, navigate]);
   const handleClose = () => {
     console.log("Logout user");
     ChangeUserSession(dispatch, false);
+    setshow(false);
     LogoutUser(dispatch);
     navigate("/login");
+    console.log(show, "sho check");
+
     // setshow(false);
   };
   return (
     <>
       <Dialog
-        open={session}
+        open={show}
         // onClose={handleClose}
       >
         <DialogTitle id="alert-dialog-title">
